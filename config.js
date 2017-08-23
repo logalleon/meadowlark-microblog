@@ -6,7 +6,7 @@ module.exports = {
 	db: {
 		database: 'meadowlark',
 		user: 'root',
-		password: 'root',
+		password: 'admin',
 		host: 'localhost',
 		port: '3306',
 		dialect: 'mysql'
@@ -27,7 +27,16 @@ module.exports = {
 	 * Server configuration settings
 	 */
 	server: {
-		port: '1337'
-	}
+		port: '1337',
+    root: __dirname
+	},
+
+  /**
+   * Site configuration
+   */
+  site: {
+    title: 'Meadowlark Blog',
+    tagline: 'A lightweight microblog'
+  }
 
 };

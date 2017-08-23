@@ -1,15 +1,15 @@
 const sql = require('sequelize');
 
-const notNullString = {
-	type: sql.STRING,
-	allowNull: false
-};
-
 module.exports = {
 	name: 'post',
 	options: {
 		indexes: [
-
+      {
+        fields: ['postDate']
+      },
+      {
+        fields: ['title']
+      }
 		]
 	},
 	schema: {
@@ -22,11 +22,21 @@ module.exports = {
 			type: sql.INTEGER,
 			allowNull: false
 		},
-		authorFullName: notNullString,
+		authorFullName: {
+      type: sql.STRING,
+      allowNull: false
+    },
 		isDraft: sql.BOOLEAN,
 		postDate: sql.DATE,
-		title: notNullString,
-		alias: notNullString,
+		title: {
+      type: sql.STRING,
+      allowNull: false
+    },
+		alias: {
+      type: sql.STRING,
+      unique: true,
+      allowNull: false
+    },
 		content: sql.TEXT
 	}
 }

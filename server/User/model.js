@@ -1,27 +1,33 @@
 const sql = require('sequelize');
 
-const notNullString = {
-	type: sql.STRING,
-	allowNull: false
-};
-
 module.exports = {
 	name: 'user',
-	options: {
-		indexes: [
-
-		]
-	},
+	options: {},
 	schema: {
 		id: {
 			type: sql.INTEGER,
 			primaryKey: true,
 			autoIncrement: true
 		},
-		user: notNullString,
-		password: notNullString,
-		email: notNullString,
-		firstName: notNullString,
-		lastName: notNullString
+		user: {
+      type: sql.STRING,
+      allowNull: false
+    },
+		password: {
+      type: sql.STRING,
+      allowNull: false
+    },
+		email: {
+      type: sql.STRING,
+      allowNull: false
+    },
+		firstName: {
+      type: sql.STRING,
+      allowNull: false
+    },
+		lastName: {
+      type: sql.STRING,
+      allowNull: false
+    }
 	}
 }

@@ -1,15 +1,12 @@
 const sql = require('sequelize');
 
-const notNullString = {
-	type: sql.STRING,
-	allowNull: false
-};
-
 module.exports = {
 	name: 'tag',
 	options: {
 		indexes: [
-
+      {
+        fields: ['name']
+      }
 		]
 	},
 	schema: {
@@ -22,6 +19,9 @@ module.exports = {
 			type: sql.INTEGER,
 			allowNull: false
 		},
-		name: notNullString
+		name: {
+      type: sql.STRING,
+      allowNull: false
+    }
 	}
 }

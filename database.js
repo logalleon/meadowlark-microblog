@@ -12,7 +12,8 @@ const Database = () => {
 	return new sequelize(database, user, password, {
 		host,
 		port,
-		dialect
+		dialect,
+    logging: false
 	});
 }
 module.exports = Database;

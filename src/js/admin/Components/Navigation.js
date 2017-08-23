@@ -5,6 +5,7 @@ const Link = require('react-router-dom').Link;
 class Navigation extends React.Component {
 
   constructor (props) {
+    console.log(props);
     super(props);
   }
 

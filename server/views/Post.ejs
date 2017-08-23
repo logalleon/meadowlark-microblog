@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= site.title %> | <%= post.title %></title>
+</head>
+<body>
+  
+  <% include header %>
+
+  <h1><%= post.title %></h1>
+
+  <h2><%= post.authorFullName %></h2>
+
+  <h3><%= new Date(post.postDate).toLocaleString() %></h3>
+
+  <div><%= post.content %></div>
+
+  <% include sidebar %>
+
+  <% include footer %>
+  
+</body>
+</html>

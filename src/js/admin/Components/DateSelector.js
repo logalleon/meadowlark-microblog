@@ -19,6 +19,7 @@ class DateSelector extends React.Component {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.date.getTime() !== this.state.date.getTime()) {
+      console.log('okay');
       this.calculateInitialTimeValues(nextProps.date);
     }
   }

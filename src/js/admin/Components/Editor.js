@@ -25,14 +25,28 @@ class Editor extends React.Component {
     this.updateContent = this.updateContent.bind(this);
     this.updateStateValue = this.updateStateValue.bind(this);
     this.sync = this.sync.bind(this);
+    this.fetch = this.fetch.bind(this);
+  }
+
+  componentDidMount () {
+    if (this.props.id) {
+      this.fetch(this.props.id);
+    }
   }
 
   componentWillReceiveProps (nextProps) {
     if (!nextProps.post) {
       this.setState({post: defaultPost});
     }
-    if (nextProps.post && nextProps.post.id !== this.state.post.id) {
-      tinymce.get('content').setContent(this.state.content);
+    if (nextProps.id !== this.state.post.id) {
+      this.fetch(nextProps.id);
+    }
+  }
+
+  componentWillUpdate (nextProps, nextState) {
+    if (nextState.post && nextState.post.id !== this.state.post.id) {
+      console.log('here');
+      tinymce.get('content').setContent(nextState.post.content);
     }
   }
 
@@ -53,6 +67,18 @@ class Editor extends React.Component {
   updateContent (e) {
     let content = e.target.getContent();
     this.setState({content});
+  }
+
+  fetch (id) {
+    let url = 'posts.json';
+    ajax({
+      url,
+      success: (response) => {
+        let post = response.filter((p) => Number(p.id) === Number(id))[0];
+        post.postDate = new Date(post.postDate);
+        this.setState({post});
+      }
+    });
   }
 
   sync (method) {
@@ -103,7 +129,7 @@ class Editor extends React.Component {
             placeholder='My Blog Post'
             name='title'
             autoComplete='off'
-            defaultValue={post.title}
+            value={post.title}
             onChange={(e) => { this.updateStateValue('title', e.target.value); }}
           />
           <label className='Label' htmlFor='startTime'>Post Date</label>

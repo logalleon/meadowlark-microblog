@@ -23,14 +23,13 @@ let optionsPublic = {
 let bundlerPublic = watchify(browserify(optionsPublic));
 
 const bundlePublic = () => {
-  let loadMaps = true;
   return bundlerPublic
     .bundle()
-    .on('error', () => {})
+    .on('error', (err) => {
+      console.log(err);
+      this.emit('end');
+    })
     .pipe(source('app.js'))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({ loadMaps }))
-    .pipe(sourcemaps.write(path.join(__dirname, '/public/js/')))
     .pipe(gulp.dest(path.join(__dirname, '/public/js/')));
 };
 bundlerPublic.on('update', bundlePublic);
@@ -47,14 +46,13 @@ let optionsAdmin = {
 let bundlerAdmin = watchify(browserify(optionsAdmin));
 
 const bundleAdmin = () => {
-  let loadMaps = true;
   return bundlerAdmin
     .bundle()
-    .on('error', () => {})
+    .on('error', (err) => {
+      console.log(err);
+      this.emit('end');
+    })
     .pipe(source('app.js'))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({ loadMaps }))
-    .pipe(sourcemaps.write(path.join(__dirname, '/admin/js/')))
     .pipe(gulp.dest(path.join(__dirname, '/admin/js/')));
 };
 bundlerAdmin.on('update', bundleAdmin);
@@ -67,8 +65,8 @@ gulp.task('default', () => {
   bundlePublic();
   bundleAdmin();
   gulp.watch('./src/scss/**/*.scss', ['sass', 'reload']);
-  gulp.watch('./src/js/public/*.js', ['compilePublic']);
-  gulp.watch('./src/js/admin/*.js', ['compileAdmin']);
+  gulp.watch('./src/js/public/**/*.js', ['compilePublic']);
+  gulp.watch('./src/js/admin/**/*.js', ['compileAdmin']);
   gulp.watch('./**/*.html', ['reload']);
   gulp.watch('./public/app.js', ['reload']);
   gulp.watch('./public/main.css', ['reload']);

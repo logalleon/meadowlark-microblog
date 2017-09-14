@@ -53,7 +53,7 @@ class DateSelector extends React.Component {
     let minutes = Number(value.split(':')[1]);
     let nextDate = new Date(this.state.date);
     nextDate.setHours(hours, minutes);
-    this.props.updateStateValue(this.props.name, nextDate);
+    this.props.updateStateValue({ target: {name: this.props.name, value: nextDate}});
     this.setState({ date: nextDate });
   }
 

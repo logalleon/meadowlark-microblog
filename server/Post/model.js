@@ -1,4 +1,6 @@
 const sql = require('sequelize');
+const {firstName, lastName} = require('../../config').admin;
+const authorId = 1;
 
 module.exports = {
 	name: 'post',
@@ -20,11 +22,13 @@ module.exports = {
 		},
 		authorId: {
 			type: sql.INTEGER,
-			allowNull: false
+			allowNull: false,
+      defaultValue: authorId
 		},
 		authorFullName: {
       type: sql.STRING,
-      allowNull: false
+      allowNull: false,
+      defaultValue: firstName + ' ' + lastName
     },
 		isDraft: sql.BOOLEAN,
 		postDate: sql.DATE,
@@ -39,4 +43,4 @@ module.exports = {
     },
 		content: sql.TEXT
 	}
-}
+};

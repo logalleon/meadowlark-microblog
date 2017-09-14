@@ -18,7 +18,7 @@ class PostList extends React.Component {
 
   fetchPosts () {
     ajax({
-      url: '/posts.json',
+      url: '/api/post',
       success: (posts) => {
         this.setState({posts});
       },

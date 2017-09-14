@@ -18,12 +18,10 @@ class Editor extends React.Component {
 
   constructor (props) {
     super(props);
-    this.state = {
-      post: props.post || defaultPost
-    };
+    this.state = props.post || defaultPost;
     this.validate = this.validate.bind(this);
     this.updateContent = this.updateContent.bind(this);
-    this.updateStateValue = this.updateStateValue.bind(this);
+    this.withValue = this.withValue.bind(this);
     this.sync = this.sync.bind(this);
     this.fetch = this.fetch.bind(this);
   }
@@ -38,15 +36,8 @@ class Editor extends React.Component {
     if (!nextProps.post) {
       this.setState({post: defaultPost});
     }
-    if (nextProps.id !== this.state.post.id) {
+    if (nextProps.id !== this.state.id) {
       this.fetch(nextProps.id);
-    }
-  }
-
-  componentWillUpdate (nextProps, nextState) {
-    if (nextState.post && nextState.post.id !== this.state.post.id) {
-      console.log('here');
-      tinymce.get('content').setContent(nextState.post.content);
     }
   }
 
@@ -54,7 +45,7 @@ class Editor extends React.Component {
     e.preventDefault();
     let valid = true;
     if (valid) {
-      if (this.state.event.id) {
+      if (this.state.id) {
         this.sync('PATCH');
       } else {
         this.sync('POST');
@@ -70,22 +61,26 @@ class Editor extends React.Component {
   }
 
   fetch (id) {
-    let url = 'posts.json';
+    let url = '/api/post/' + id;
     ajax({
       url,
       success: (response) => {
-        let post = response.filter((p) => Number(p.id) === Number(id))[0];
-        post.postDate = new Date(post.postDate);
-        this.setState({post});
+        response.postDate = new Date(response.postDate);
+        let nextState = Object.assign({}, this.state, response);
+        this.setState(nextState);
+        tinymce.get('content').on('init', (e) => {
+          e.target.setContent(nextState.content);
+        });
       }
     });
   }
 
   sync (method) {
-    //let data = this.getFormData();
+    let {title, content, postDate} = this.state;
+    let data = {title, content, postDate};
     let url = method === 'PATCH' ?
-      '/crm/events/' + this.state.event.id :
-      '/crm/events';
+      '/api/post/' + this.state.id :
+      '/api/post';
     //let headers = getAuthorizationHeaders();
     ajax({
       url,
@@ -94,8 +89,11 @@ class Editor extends React.Component {
       data,
       success: (response, status, request) => {
         //refreshToken(request);
+        console.log(response);
         if (!response.error) {
           //this.props.eventsNeedsUpdate();
+          let nextState = Object.assign({}, this.state, response);
+          this.setState(nextState);
         } else {
           // @TODO error
         }
@@ -109,15 +107,15 @@ class Editor extends React.Component {
     });
   }
 
-  updateStateValue (name, value) {
-    let nextPost = Object.assign({}, this.state.post);
-    nextPost[name] = value;
-    this.setState({ post: nextPost });
+  withValue (e) {
+    let {name, value} = e.target;
+    this.setState({[name]: value});
   }
 
   render () {
-    let post = this.state.post;
-    let saveText = this.state.post.id ? 'Save Changes' : 'Create Post';
+    let post = this.state;
+    console.log(post);
+    let saveText = this.state.id ? 'Save Changes' : 'Create Post';
     let config = { menubar: false };
     return (
       <div className='EventForm'>
@@ -130,25 +128,28 @@ class Editor extends React.Component {
             name='title'
             autoComplete='off'
             value={post.title}
-            onChange={(e) => { this.updateStateValue('title', e.target.value); }}
+            onChange={this.withValue}
           />
           <label className='Label' htmlFor='startTime'>Post Date</label>
           <DateSelector
             name='postDate'
-            updateStateValue={this.updateStateValue}
+            withValue={this.withValue}
             date={post.postDate}
           />
           <label className='Label' htmlFor='content'>Content</label>
           <TinyMCE
             id='content'
             name='content'
-            defaultValue={post.content}
             config={config}
             content={post.content}
             onChange={this.updateContent}
             ref={(el) => { this.tincymcecontent = el; }}
           />
-          <input className='Input Input--Submit' type='submit' value={saveText}/>
+          <input
+            className='Input Input--Submit'
+            type='submit'
+            value={saveText}
+          />
         </form>
       </div>
     );

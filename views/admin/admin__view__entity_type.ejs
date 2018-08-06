@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %>Administration | Dashboard</title>
+</head>
+<body>
+  <% if (entityTypes.length) { %>
+    <% entityTypes.forEach((entityType) => { %>
+      <h1><%= entityType.label %></h1>
+      <h2><%= entityType.machineName %></h2>
+    <% }); %>
+  <% } else { %>
+    <h1>No entity types defined.</h1>
+  <% } %>
+</body>
+</html>

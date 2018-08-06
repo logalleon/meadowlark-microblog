@@ -1,3 +1,5 @@
+const { env: ENV } = process;
+
 module.exports = {
 
 	/**
@@ -6,9 +8,9 @@ module.exports = {
 	db: {
 		database: 'meadowlark',
 		user: 'root',
-		password: 'admin',
+		password: 'root',
 		host: 'localhost',
-		port: '3306',
+		port: ENV.DB_PORT || 3306,
 		dialect: 'mysql'
 	},
 
@@ -27,7 +29,7 @@ module.exports = {
 	 * Server configuration settings
 	 */
 	server: {
-		port: '1337',
+		port: ENV.PORT || 9000,
     root: __dirname
 	},
 

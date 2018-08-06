@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 33006:3306
+    environment:
+      MYSQL_DATABASE: meadowlark
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+  meadowlark:
+    container_name: meadowlark
+    build: .
+    volumes:
+      - ./:/meadowlark/
+      - ./.env:/meadowlark/.env
+      - ./package.json:/meadowlark/package.json
+      - ./yarn.lock:/meadowlark/yarn.lock
+    depends_on:
+      - db
+    links:
+      - db
+    ports: 
+      - 10003:9000
+      - 10004:5858

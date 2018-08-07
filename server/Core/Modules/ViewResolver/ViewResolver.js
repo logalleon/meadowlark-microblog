@@ -29,6 +29,7 @@ var ViewEntityRelation;
     ViewEntityRelation[ViewEntityRelation["ENTITY_TYPE"] = 0] = "ENTITY_TYPE";
     ViewEntityRelation[ViewEntityRelation["FIELD"] = 1] = "FIELD";
 })(ViewEntityRelation || (ViewEntityRelation = {}));
+exports.ViewEntityRelation = ViewEntityRelation;
 class ViewResolver {
     constructor() {
         this.structureDelimiter = '__';
@@ -47,6 +48,13 @@ class ViewResolver {
         const { domain, structure, variation, target, relation } = options;
         let resolved = `/${domain}/${structure}/${lodash_1.kebabCase(lodash_1.lowerCase(target))}`;
         resolved += relation ? `/${lodash_1.kebabCase(this.getRelationPath(relation))}` : '';
+        resolved += variation ? `/${variation}` : '';
+        return resolved;
+    }
+    resolveParameterUrlPath(options) {
+        const { domain, relation, variation } = options;
+        let resolved = `/${domain}/:structure/:target`;
+        resolved += relation ? `/:relation` : '';
         resolved += variation ? `/${variation}` : '';
         return resolved;
     }

@@ -30,6 +30,10 @@ exports.default = async (connection) => {
         variation: ViewResolver_1.ViewVariations.CREATE,
         target: EntityType_1.default.tableName
     }), controller.renderEntityTypeForm.bind(controller));
+    router.get(viewResolver.resolveParameterUrlPath({
+        domain: ViewResolver_1.Domains.ADMIN,
+        variation: ViewResolver_1.ViewVariations.EDIT
+    }), controller.renderEditEntity.bind(controller));
     router.post(viewResolver.resolveUrlPath({
         domain: ViewResolver_1.Domains.ADMIN,
         structure: ViewResolver_1.ViewStructures.VIEW,

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import EntityTypeRouter from './Core/Modules/Entity/EntityTypeRouter';
+import FieldRouter from './Core/Modules/Field/FieldRouter';
 import { RequestHandlerParams } from 'express-serve-static-core';
 
 const router = Router();
@@ -16,6 +17,7 @@ export default async (connection: any): Promise<RequestHandlerParams> => {
     // router.use(Admin);
     // router.use(Post);
     router.use(await EntityTypeRouter(connection));
+    router.use(await FieldRouter(connection));
     resolve(router);
   });
 };

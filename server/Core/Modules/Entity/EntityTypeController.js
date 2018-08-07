@@ -7,7 +7,6 @@ const lodash_1 = require("lodash");
 const EntityType_1 = __importDefault(require("./EntityType"));
 const config_1 = require("../../../config");
 const ViewResolver_1 = require("../ViewResolver/ViewResolver");
-const Field_1 = __importDefault(require("../Field/Field"));
 const { root: serverRoot } = config_1.server;
 class EntityTypeController {
     constructor(connection) {
@@ -54,7 +53,8 @@ class EntityTypeController {
                 domain: ViewResolver_1.Domains.ADMIN,
                 structure: ViewResolver_1.ViewStructures.FORM,
                 variation: ViewResolver_1.ViewVariations.EDIT,
-                target: `${entityType.machine_name}/${Field_1.default.tableName}`
+                target: entityType.machineName,
+                relation: ViewResolver_1.ViewEntityRelation.FIELD
             });
             return renderable;
         });
@@ -96,6 +96,9 @@ class EntityTypeController {
             viewLink,
             submitAction
         });
+    }
+    async renderEditEntity(req, res) {
+        res.sendStatus(200);
     }
 }
 exports.default = EntityTypeController;

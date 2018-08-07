@@ -1,4 +1,4 @@
-import { Fieldable } from '../../Interfaces';
+import { Fieldable, DefaultConnection, DefaultTablesFieldable } from '../../Interfaces';
 import Sequelize, { DefineAttributes, DataTypes, DefineOptions, DefineIndexesOptions } from 'sequelize';
 
 interface EntityTypeDefineOptions {
@@ -76,7 +76,7 @@ class EntityType implements Fieldable {
     return new Promise<boolean|Error>((resolve, reject) => {
       const { tableName } = EntityType;
       connection.model(tableName).create({
-        machine_name: this.machineName,
+        machineName: this.machineName,
         label: this.label
       }).then(() => {
         resolve(true);

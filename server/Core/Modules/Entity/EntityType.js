@@ -34,7 +34,7 @@ class EntityType {
         return new Promise((resolve, reject) => {
             const { tableName } = EntityType;
             connection.model(tableName).create({
-                machine_name: this.machineName,
+                machineName: this.machineName,
                 label: this.label
             }).then(() => {
                 resolve(true);

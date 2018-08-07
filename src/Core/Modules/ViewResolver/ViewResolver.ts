@@ -32,6 +32,12 @@ interface ViewResolverOptions {
   includeExtension?: boolean
 }
 
+interface ParameterPathOptions {
+  domain: Domains,
+  relation?: boolean
+  variation?: ViewVariations
+}
+
 class ViewResolver {
 
   private structureDelimiter = '__';
@@ -60,6 +66,14 @@ class ViewResolver {
     return resolved;
   }
 
+  resolveParameterUrlPath (options: ParameterPathOptions): string {
+    const { domain, relation, variation } = options;
+    let resolved: string = `/${domain}/:structure/:target`;
+    resolved += relation ? `/:relation` : '';
+    resolved += variation ? `/${variation}` : '';
+    return resolved;
+  }
+
   getRelationPath (relation: ViewEntityRelation): string {
     switch (relation) {
       case ViewEntityRelation.ENTITY_TYPE:
@@ -72,4 +86,4 @@ class ViewResolver {
 }
 
 export default ViewResolver;
-export { Domains, ViewStructures, ViewVariations };
+export { Domains, ViewStructures, ViewVariations, ViewEntityRelation };

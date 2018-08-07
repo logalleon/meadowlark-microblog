@@ -24,6 +24,10 @@ export default async (connection: Sequelize) => {
     variation: ViewVariations.CREATE,
     target: EntityType.tableName
   }), controller.renderEntityTypeForm.bind(controller));
+  router.get(viewResolver.resolveParameterUrlPath({
+    domain: Domains.ADMIN,
+    variation: ViewVariations.EDIT
+  }), controller.renderEditEntity.bind(controller));
 
   router.post(viewResolver.resolveUrlPath({
     domain: Domains.ADMIN,

@@ -3,12 +3,13 @@ import { join } from 'path';
 import { snakeCase } from 'lodash';
 import EntityType, { EntityTypeModel, RenderableEntityType } from './EntityType';
 import { server } from '../../../config';
-import ViewResolver, { Domains, ViewStructures, ViewVariations } from '../ViewResolver/ViewResolver';
+import ViewResolver, { Domains, ViewStructures, ViewVariations, ViewEntityRelation } from '../ViewResolver/ViewResolver';
 import Field from '../Field/Field';
+import { Connectable } from '../../Interfaces';
 
 const { root: serverRoot } = server;
 
-class EntityTypeController {
+class EntityTypeController implements Connectable {
 
   public connection: any;
 
@@ -57,7 +58,8 @@ class EntityTypeController {
         domain: Domains.ADMIN,
         structure: ViewStructures.FORM,
         variation: ViewVariations.EDIT,
-        target: `${entityType.machine_name}/${Field.tableName}`
+        target: entityType.machineName,
+        relation: ViewEntityRelation.FIELD
       });
       return <RenderableEntityType>renderable;
     });
@@ -100,6 +102,10 @@ class EntityTypeController {
       viewLink,
       submitAction
     });
+  }
+
+  async renderEditEntity (req: Request, res: Response) {
+    res.sendStatus(200);
   }
 
 }

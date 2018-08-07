@@ -50,8 +50,9 @@ class ViewResolver {
   }
 
   resolvePath (options: ViewResolverOptions): string {
-    const { domain, structure, variation, target, extension, includeExtension } = options;
+    const { domain, structure, variation, target, extension, includeExtension, relation } = options;
     let resolved: string = `./${domain}/${domain}${this.structureDelimiter}${structure}`; // @TODO path consistency
+    resolved += relation ? `${this.structureDelimiter}${this.getRelationPath(relation)}` : '';
     resolved += variation ? `${this.variantDelimiter}${variation}` : '';
     resolved += `${this.structureDelimiter}${snakeCase(target)}`;
     resolved += includeExtension ? `${extension || this.defaultExtension}` : '';

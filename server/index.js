@@ -16,49 +16,62 @@ const path_1 = __importStar(require("path"));
 const database_1 = __importDefault(require("./database"));
 const config_1 = require("./config");
 const router_1 = __importDefault(require("./router"));
+const ViewResolver_1 = __importDefault(require("./Core/Modules/ViewResolver/ViewResolver"));
 (async () => {
-    /**
-     * Models
-     */
-    // const User = require('./User/model');
-    // const Post = require('./Post/model');
-    // const Tag = require('./Tag/model');
-    // const Category = require('./Category/model');
-    const app = express_1.default();
-    /**
-     * Body parser
-     */
-    let extended = true;
-    app.use(body_parser_1.default.json());
-    app.use(body_parser_1.default.urlencoded());
-    /**
-     * Views
-     */
-    app.set('views', path_1.join(config_1.server.root, '../views'));
-    app.set('view engine', 'ejs');
-    /**
-     * Database connection and model definition
-     */
-    const connection = await database_1.default();
-    // connection.define(User.name, User.schema, User.options).sync();
-    // connection.define(Post.name, Post.schema, Post.options).sync();
-    // connection.define(Tag.name, Tag.schema, Tag.options).sync();
-    // connection.define(Category.name, Category.schema, Category.options).sync();
-    app.locals.connection = connection;
-    /**
-     * Routing
-     */
-    const router = router_1.default(connection);
-    app.use(router);
-    app.use(express_1.default.static(path_1.default.join(__dirname, '../admin')));
-    app.use(express_1.default.static(path_1.default.join(__dirname, '../public'), { extensions: ['html'] }));
-    /**
-     * Start the server
-     */
-    app.listen(config_1.server.port, (err) => {
-        if (err) {
-            throw err;
+    try {
+        /**
+         * Models
+         */
+        // const User = require('./User/model');
+        // const Post = require('./Post/model');
+        // const Tag = require('./Tag/model');
+        // const Category = require('./Category/model');
+        const app = express_1.default();
+        /**
+         * Body parser
+         */
+        let extended = true;
+        app.use(body_parser_1.default.json());
+        app.use(body_parser_1.default.urlencoded());
+        /**
+         * Views
+         */
+        app.set('views', path_1.join(config_1.server.root, '../views'));
+        app.set('view engine', 'ejs');
+        app.locals.viewResolver = new ViewResolver_1.default();
+        /**
+         * Database connection and model definition
+         */
+        let connection;
+        try {
+            connection = database_1.default();
         }
-        console.log('Hello from Meadowlark at ', config_1.server.port);
-    });
+        catch (connectionError) {
+            throw (connectionError);
+        }
+        // connection.define(User.name, User.schema, User.options).sync();
+        // connection.define(Post.name, Post.schema, Post.options).sync();
+        // connection.define(Tag.name, Tag.schema, Tag.options).sync();
+        // connection.define(Category.name, Category.schema, Category.options).sync();
+        app.locals.connection = connection;
+        /**
+         * Routing
+         */
+        const router = await router_1.default(connection);
+        app.use(router);
+        app.use(express_1.default.static(path_1.default.join(__dirname, '../admin')));
+        app.use(express_1.default.static(path_1.default.join(__dirname, '../public'), { extensions: ['html'] }));
+        /**
+         * Start the server
+         */
+        app.listen(config_1.server.port, (err) => {
+            if (err) {
+                throw err;
+            }
+            console.log('Hello from Meadowlark at ', config_1.server.port);
+        });
+    }
+    catch (e) {
+        throw (e);
+    }
 })();

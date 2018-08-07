@@ -14,3 +14,5 @@ class Field {
         });
     }
 }
+Field.tableName = 'field';
+exports.default = Field;

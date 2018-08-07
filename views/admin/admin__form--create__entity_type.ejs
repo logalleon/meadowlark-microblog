@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %>Administration | Dashboard</title>
+</head>
+<body>
+  <h1>Create a New Entity Type</h1>
+  <form action='<%= submitAction %>' method='post'>
+    <label for='label'>Label</label>
+    <input type='text' placeholder='Entity type label' name='label'/>
+    <label for='machineName'>Machine Name (machine_name)</label>
+    <input type='text' placeholder='Entity machine name' name='machineName'/>
+    <input type='submit' value='Create'/>
+  </form>
+  <a href="<%= viewLink %>">View Entity Types</a>
+</body>
+</html>

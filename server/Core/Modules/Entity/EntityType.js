@@ -9,19 +9,26 @@ class EntityType {
         this.label = fieldable.label;
         this.machineName = fieldable.machineName;
     }
-    static defineTables(connection) {
-        const { tableName: name } = EntityType;
-        const attributes = Object.assign({}, EntityType.defaultAttributes);
-        const options = {
-            indexes: [
-                {
-                    unique: true,
-                    fields: ['machine_name']
-                }
-            ]
-        };
-        connection.define(name, attributes, options);
-        return true;
+    static async defineTables(connection) {
+        return new Promise((resolve, reject) => {
+            const { tableName: name } = EntityType;
+            const attributes = Object.assign({}, EntityType.defaultAttributes);
+            const options = {
+                indexes: [
+                    {
+                        unique: true,
+                        fields: ['machineName']
+                    }
+                ]
+            };
+            connection.define(name, attributes, options).sync()
+                .then(() => {
+                resolve(true);
+            })
+                .catch((e) => {
+                reject(e);
+            });
+        });
     }
     async create(connection) {
         return new Promise((resolve, reject) => {
@@ -71,7 +78,7 @@ EntityType.defaultAttributes = {
     label: {
         type: sequelize_1.default.STRING
     },
-    machine_name: {
+    machineName: {
         type: sequelize_1.default.STRING,
         unique: true
     }

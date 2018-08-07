@@ -18,6 +18,8 @@ class Field implements FieldInterface {
 
   public connection: any;
 
+  public static tableName: string = 'field';
+
   constructor (props: Props, fieldable: Fieldable, connection: Sequelize) {
     this.relation = props.relation;
     this.type = props.type;
@@ -33,3 +35,5 @@ class Field implements FieldInterface {
   }
 
 }
+
+export default Field;

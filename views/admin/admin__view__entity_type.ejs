@@ -4,13 +4,17 @@
   <title><%= title %>Administration | Dashboard</title>
 </head>
 <body>
+  <h1>Entity Types</h1>
   <% if (entityTypes.length) { %>
     <% entityTypes.forEach((entityType) => { %>
-      <h1><%= entityType.label %></h1>
-      <h2><%= entityType.machineName %></h2>
+      <p>Label: <%= entityType.label %></p>
+      <p>Machine Name: <%= entityType.machineName %></p>
+      <a href="<%= entityType.editEntityLink %>">Edit</a>
+      <a href="<%= entityType.manageFieldsLink %>">Manage Fields</a>
     <% }); %>
   <% } else { %>
     <h1>No entity types defined.</h1>
   <% } %>
+  <a href="<%= createLink %>">Create New Entity Type</a>
 </body>
 </html>

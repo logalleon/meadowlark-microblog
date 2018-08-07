@@ -5,7 +5,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     ports:
-      - 33006:3306
+      - 10002:3306
     environment:
       MYSQL_DATABASE: meadowlark
       MYSQL_ROOT_PASSWORD: root

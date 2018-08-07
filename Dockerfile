@@ -5,4 +5,4 @@ COPY package.json yarn.lock ./
 RUN yarn
 COPY . .
 EXPOSE 9000 5858
-CMD ["node", "server/index.js"]
+CMD ["./node_modules/.bin/nodemon", "server/index.js"]

@@ -9,7 +9,15 @@ interface EntityTypeAttributes {
   id: number
 }
 
-type EntityTypeModel = EntityTypeAttributes & Fieldable;
+interface EntityLinks {
+  editEntityLink: string,
+  manageFieldsLink: string
+  manageFieldsDisplayLink?: string,
+  deleteEntityLink?: string
+}
+
+type EntityTypeModel = EntityTypeAttributes & Fieldable & DefineAttributes;
+type RenderableEntityType = EntityLinks & EntityTypeModel;
 
 class EntityType implements Fieldable {
 
@@ -27,7 +35,7 @@ class EntityType implements Fieldable {
     label: {
       type: Sequelize.STRING
     },
-    machine_name: {
+    machineName: {
       type: Sequelize.STRING,
       unique: true
     }
@@ -38,23 +46,30 @@ class EntityType implements Fieldable {
     this.machineName = fieldable.machineName;
   }
 
-  static defineTables (connection: Sequelize.Sequelize): boolean {
-    const { tableName: name } = EntityType;
-    const attributes = Object.assign({}, EntityType.defaultAttributes);
-    const options: DefineOptions<EntityTypeDefineOptions> = {
-      indexes: [
-        {
-          unique: true,
-          fields: [ 'machine_name' ]
-        }
-      ]
-    }
-    connection.define(
-      name,
-      attributes,
-      options
-    );
-    return true;
+  static async defineTables (connection: Sequelize.Sequelize): Promise<boolean|Error> {
+    return new Promise<boolean|Error>((resolve, reject) => {
+      const { tableName: name } = EntityType;
+      const attributes = Object.assign({}, EntityType.defaultAttributes);
+      const options: DefineOptions<EntityTypeDefineOptions> = {
+        indexes: [
+          {
+            unique: true,
+            fields: [ 'machineName' ]
+          }
+        ]
+      }
+      connection.define(
+        name,
+        attributes,
+        options
+      ).sync()
+      .then(() => {
+        resolve(true);
+      })
+      .catch((e: Error) => {
+        reject(e);
+      });
+    });
   }
 
   async create (connection: Sequelize.Sequelize): Promise<boolean|Error> {
@@ -100,4 +115,4 @@ class EntityType implements Fieldable {
 }
 
 export default EntityType;
-export { EntityTypeModel };
+export { EntityTypeModel, RenderableEntityType };

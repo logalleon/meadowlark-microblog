@@ -6,14 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const EntityTypeRouter_1 = __importDefault(require("./Core/Modules/Entity/EntityTypeRouter"));
 const router = express_1.Router();
-exports.default = (connection) => {
-    /**
-     * Routes
-     */
-    // const Admin = require('./Admin/router');
-    // const Post = require('./Post/router');
-    // router.use(Admin);
-    // router.use(Post);
-    router.use(EntityTypeRouter_1.default(connection));
-    return router;
+exports.default = async (connection) => {
+    return new Promise(async (resolve, reject) => {
+        /**
+         * Routes
+         */
+        // const Admin = require('./Admin/router');
+        // const Post = require('./Post/router');
+        // router.use(Admin);
+        // router.use(Post);
+        router.use(await EntityTypeRouter_1.default(connection));
+        resolve(router);
+    });
 };

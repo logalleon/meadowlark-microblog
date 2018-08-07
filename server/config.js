@@ -7,7 +7,7 @@ module.exports = {
         database: 'meadowlark',
         user: 'root',
         password: 'root',
-        host: 'localhost',
+        host: 'db',
         port: ENV.DB_PORT || 3306,
         dialect: 'mysql'
     },
